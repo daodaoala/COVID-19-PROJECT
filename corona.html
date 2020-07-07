@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Corona-19 site</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/coronastyles.css" rel="stylesheet" />
+
+        <style>
+          ul{
+            list-style: none;
+          }
+          nav {
+            background-color: #d48a6e;
+          }
+          .seoul_map{
+            background-image: url(assets/img/지도.png);
+          }
+          .seoul_map:hover{
+            background-image: url(assets/img/서초.png);
+          }
+
+        </style>
+        <style type="text/css">
+        .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}
+        .tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333; font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+        .tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:1px;color:#333; font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+        .tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
+        .tg .tg-0lax{text-align:center;vertical-align:top}
+        </style>
+
+        <script>
+        function change_img(img,name){
+          //서울 지도에서 해당 구역을 선택하면 이미지가 바뀜
+          if (name=='name_division_1') {
+            document.getElementsByClassName(img)[0].src='assets/img/서초.png';
+          } // 만약 name_division_w로 받게되면 서부가 강조된 이미지로 src가 바뀌게끔 해준다.
+          // 아래의 else if들도 마찬가지로 해준다.
+          else if (name=='name_division_2') {
+            document.getElementsByClassName(img)[0].src='assets/img/강남.png';
+          }
+
+          else if (name=='name_division_3') {
+            document.getElementsByClassName(img)[0].src='assets/img/광진.png';
+          }
+
+          else if (name=='name_division_4') {
+            document.getElementsByClassName(img)[0].src='assets/img/송파.png';
+          }
+          else if (name=='name_division_5') {
+            document.getElementsByClassName(img)[0].src='assets/img/강동.png';
+          }
+
+        }
+        function default_img(img){
+
+          document.getElementsByClassName(img)[0].src='assets/img/지도.png';
+        }// 구역에 마우스가 올라가 있지 않을 경우 아무것도 강조되지 않는 이미지가 뜨게끔 해주는 함수
+        </script>
+        <!-- -->
+        <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
+        <script>
+          $.get('http://www.seoul.go.kr/coronaV/coronaStatus.do',function (data){
+            $(data).find("tbody:eq(4) tr").each(function(){                //각각의 tr마다
+              var p_num=$(this).find("td:eq(0)").text();                          //환자 번호 p_num
+              var p_date=$(this).find("td:eq(1)").text();                           //환자 확진일  p_date
+              var p_addr=$(this).find("td:eq(2)").text();                          //환자 거주지 p_addr
+              var p_trip=$(this).find("td:eq(3)").text();                            //환자 여행력 p_trip
+              var p_contact=$(this).find("td:eq(4)").text();                      //환자 접촉력 p_contact
+              var p_hospital=$(this).find("td:eq(5)").text();                      //환자 조치사항 p_hospital
+              var result ="<tr><td class='tg-0lax'>"+p_num+"</td><td class='tg-0lax'>"+p_date+"</td><td class='tg-0lax'>"+p_addr+"</td><td class='tg-0lax'>"+p_trip+"</td><td class='tg-0lax'>"+p_contact+"</td><td class='tg-0lax'>"+p_hospital +"</td></tr>";
+              if(p_addr==="서초구"){
+                $("#p_seoul1_1 tbody").append(result);
+              }
+              else if(p_addr==="강남구"){
+                $("#p_seoul2_1 tbody").append(result);
+              }
+              else if(p_addr==="광진구"){
+                $("#p_seoul3_1 tbody").append(result);
+              }
+              else if(p_addr==="송파구"){
+                $("#p_seoul4_1 tbody").append(result);
+              }
+            });
+          });
+          $.get('https://www.mohw.go.kr/react/popup_200128.html', function (data){
+            $(data).find("tbody tr").each(function(){    // $(data).find(".tb_center tr")
+              var main_city =$(this).find("td:eq(0)"). text();                        //선별진료소 시.도 main_city
+              if(main_city==="서울"){
+                var sub_city =$(this).find("td:eq(1)"). text();                        //선별진료소 자치구 sub_city
+                var hospital_name=$(this).find("td:eq(2)").text();                  //선별진료소 이름 hospital_name
+                var hospital_call=$(this).find("td:eq(4)").text();                     //선별진료소 전화번호 hospital_call
+                var result ="<tr><td class='tg-0lax'>"+main_city+"</td><td class='tg-0lax'>"+ sub_city+"</td><td class='tg-0lax'>"+ hospital_name+"</td><td class='tg-0lax'><a href ='tel:"+hospital_call+"'>"+ hospital_call+"</a></td></tr>";
+                if(sub_city==="서초구"){
+                  $("#p_seoul1_2 tbody").append(result);
+                }
+                else if(sub_city==="강남구"){
+                  $("#p_seoul2_2 tbody").append(result);
+                }
+                else if(sub_city==="광진구"){
+                  $("#p_seoul3_2 tbody").append(result);
+                }
+                else if(sub_city==="송파구"){
+                  $("#p_seoul4_2 tbody").append(result);
+                }
+              }
+            });
+          });
+    </script>
+    <script src="http://parts.needpartsinc.com/js/jquery.min.js"></script>
+    <script src="http://parts.needpartsinc.com/js/jquery.rwdImageMaps.min.js"></script>
+   <script>
+      $(document).ready(function(e) {
+        $('map').imageMapResize();
+      });
+
+    </script>
+    </head>
+
+    <body id="page-top">
+        <!-- Navigation-->
+        <!--메인페이지-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                <span class="d-block d-lg-none">COVID - 19</span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/mask.png" alt="" /></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">확진자 현황</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Application">선제검사신청</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Rule">안전 수칙</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Support">피해 지원</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#"></a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#"></a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container-fluid p-0">
+            <!-- 자치구별 확진자 현황-->
+
+            <section class="resume-section" id="about">
+                <div class="resume-section-content">
+                    <h4 class="mb-0">
+                        자치구 별 확진자 현황
+                      <!--  <span class="text-primary">Taylor</span> -->
+                    </h4>
+                    <div class="subheading mb-5">
+                      <img id="seoul_map" class= "seoul_map" src="assets/img/지도.png" alt="seoul" usemap="#usemap" >
+                        <map name="usemap">
+                        <area shape="rect" alt="" title="" coords="437,436,447,441" href="#seoul1" target="" onMouseOver = "change_img('seoul_map','name_division_1')" onMouseOut="default_img('seoul_map')"/><area shape="rect" alt="" title="" coords="418,418,466,440" href="#seoul1" target="" onMouseOver = "change_img('seoul_map','name_division_1')" onMouseOut="default_img('seoul_map')"/>
+                        <area shape="rect" alt="" title="" coords="473,390,528,431" href="#seoul2" target=""  onMouseOver = "change_img('seoul_map','name_division_2')" onMouseOut="default_img('seoul_map')"/>
+                        <area shape="rect" alt="" title="" coords="514,313,567,347" href="#seoul3" target="" onMouseOver = "change_img('seoul_map','name_division_3')" onMouseOut="default_img('seoul_map')"/>
+                        <area shape="rect" alt="" title="" coords="545,378,607,413" href="#seoul4" target="" onMouseOver = "change_img('seoul_map','name_division_4')" onMouseOut="default_img('seoul_map')"/>
+                        <area shape="rect" alt="" title="" coords="591,301,660,334" href="#" target="" onMouseOver = "change_img('seoul_map','name_division_5')" onMouseOut="default_img('seoul_map')"/>
+                        </map>
+                    </div>
+                </div>
+            </section>
+
+
+            <hr class="m-0" />
+            <!-- Experience-->
+            <section class="resume-section" id="seoul1">
+                <div class="resume-section-content">
+                    <h3>서초구</h3>
+                    <div class="mb-5"><a href = "#p_seoul1_1">확진자 현황</a></br> <a href= "#p_seoul1_2">안심병원 현황</a></div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h4 class="mb-0 mb-3">서초구 확진자 현황</h4>
+                            <div id="p_seoul1_1">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">환자 번호</th>
+                                    <th class="tg-amwm">확진일</th>
+                                    <th class="tg-amwm">거주지</th>
+                                    <th class="tg-amwm">여행력</th>
+                                    <th class="tg-amwm">접촉력</th>
+                                    <th class="tg-amwm">조치사항</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h4 class="mb-0 mb-3">서초구 안심병원현황</h4>
+                            <div id="p_seoul1_2">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">시도</th>
+                                    <th class="tg-amwm">시군구</th>
+                                    <th class="tg-amwm">기관명</th>
+                                    <th class="tg-amwm">전화번호</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="m-0" />
+            <!-- Education-->
+            <section class="resume-section" id="seoul2">
+                <div class="resume-section-content">
+                    <h3>강남구</h3>
+                    <div class="mb-5"><a href = "#p_seoul2_1">확진자 현황</a></br> <a href= "#p_seoul2_2">안심병원 현황</a></div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h4 class="mb-0 mb-3">강남구 확진자 현황</h4>
+                            <div id="p_seoul2_1">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">환자 번호</th>
+                                    <th class="tg-amwm">환자 확진일</th>
+                                    <th class="tg-amwm">환자 거주지</th>
+                                    <th class="tg-amwm">환자 여행력</th>
+                                    <th class="tg-amwm">환자 접촉력</th>
+                                    <th class="tg-amwm">환자 조치사항</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h4 class="mb-0 mb-3">강남구 안심병원현황</h4>
+                            <div id="p_seoul2_2">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">시도</th>
+                                    <th class="tg-amwm">시군구</th>
+                                    <th class="tg-amwm">기관명</th>
+                                    <th class="tg-amwm">전화번호</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="m-0" />
+            <!-- Skills-->
+            <section class="resume-section" id="seoul3">
+                <div class="resume-section-content">
+                    <h3>광진구</h3>
+                    <div class="mb-5"><a href = "#p_seoul3_1">확진자 현황</a></br> <a href= "#p_seoul3_2">안심병원 현황</a></div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h4 class="mb-0 mb-3">광진구 확진자 현황</h4>
+                            <div id="p_seoul3_1">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">환자 번호</th>
+                                    <th class="tg-amwm">환자 확진일</th>
+                                    <th class="tg-amwm">환자 거주지</th>
+                                    <th class="tg-amwm">환자 여행력</th>
+                                    <th class="tg-amwm">환자 접촉력</th>
+                                    <th class="tg-amwm">환자 조치사항</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0 mb-3">광진구 안심병원현황</h3>
+                            <div id="p_seoul3_2">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">시도</th>
+                                    <th class="tg-amwm">시군구</th>
+                                    <th class="tg-amwm">기관명</th>
+                                    <th class="tg-amwm">전화번호</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="m-0" />
+            <!--송파구 -->
+
+            <hr class="m-0" />
+            <!-- Skills-->
+            <section class="resume-section" id="seoul4">
+                <div class="resume-section-content">
+                    <h3>송파구</h3>
+                    <div class="mb-5"><a href = "#p_seoul4_1">확진자 현황</a></br> <a href= "#p_seoul4_2">안심병원 현황</a></div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h4 class="mb-0 mb-3">송파구 확진자 현황</h4>
+                            <div id="p_seoul4_1">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">환자 번호</th>
+                                    <th class="tg-amwm">환자 확진일</th>
+                                    <th class="tg-amwm">환자 거주지</th>
+                                    <th class="tg-amwm">환자 여행력</th>
+                                    <th class="tg-amwm">환자 접촉력</th>
+                                    <th class="tg-amwm">환자 조치사항</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0 mb-3">송파구 안심병원현황</h3>
+                            <div id="p_seoul4_2">
+                              <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-amwm">시도</th>
+                                    <th class="tg-amwm">시군구</th>
+                                    <th class="tg-amwm">기관명</th>
+                                    <th class="tg-amwm">전화번호</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">July 2020 - Present</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="m-0" />
+<!-- 코로나 관련 주요 뉴스
+            <section class="resume-section" id="News">
+                <div class="resume-section-content">
+                    <h3 class="mb-5">코로나 관련 주요 뉴스</h3>
+                    <p>Apart from being a web developer, I enjoy most of my time being outdoors. In the winter, I am an avid skier and novice ice climber. During the warmer months here in Colorado, I enjoy mountain biking, free climbing, and kayaking.</p>
+                    <p class="mb-0">When forced indoors, I follow a number of sci-fi and fantasy genre movies and television shows, I am an aspiring chef, and I spend a large amount of my free time exploring the latest technology advancements in the front-end web development world.</p>
+                </div>
+            </section>
+            <hr class="m-0" /> -->
+
+<!-- 선제 검사 신청 -->
+<hr class="m-0" />
+<section class="resume-section" id="Application">
+    <div class="resume-section-content">
+        <h4 class="mb-5">선제검사 신청</h4>
+        <ul class="check">
+        <li>
+        <img src="image선제.png"  width="80%" height="230" style="margin-bottom: 10px;"/>
+      </li>
+      <li>
+      <img src="image5.png"  width="80%" height="170" style="margin-bottom:20px;"/>
+    </li>
+        <p class="mb-0"><font size="2em" color="black" font-weight="bold"> <검사대상></font></p>
+        <p><font size="2.5em" color="red"> 서울시에 주소를 둔</font>
+           <font size="2em" color="black">거주자 중  「코로나19」 </font><font size="2.5em" color="red">무증상자</font>
+        </p>
+        <li>
+        <img src="image7.png"  width="80%" height="190" style="margin-bottom:10px;"/>
+      </li>
+
+    <div class="resume-section-content" style="position: relative; background: #eaf4fd; margin-top: 50px;padding: 30px 10px 10px; border: 1px dotted #dbdbdb">
+        <h6 style="display: inline-block; padding: 5px 30px; background: #4489b2; border: 1px solid #4489b2; position: absolute; top:-15px; left: 20px; color: #fff;"><유의사항></h6>
+        <span "font-size: 14px;">
+    <p class="p-cont p-indent10">
+      ① 서울시 코로나19 선제검사는 매주 월요일에 그 다음 주 검사를 위한 사전 예약을 받으며, 신청 예약은 선착순 마감됩니다.<br / />
+
+    <span style="color: #023eff; font-size: 13px;">
+       ** 해당 주에 신청 예약이 마감되면, 그 다음 주 월요일에 예약 신청 가능
+    </span>
+      </p>
+      <p class="p-cont p-indent15" >
+        ② 서울시 코로나19 선제검사는
+        <font color="red">1인 1회만</font>
+        가능합니다.
+      </p>
+      <p class="p-cont p-indent15">
+        ③ 코로나19 검사 예약 시 본인 인증 후 신청 가능합니다.
+      </p>
+      <p class="p-cont p-indent15">
+        ④ 코로나19 검사 취소는 예약신청이 종료되는 그 주 금요일 18시까지 가능합니다.
+        <br  />
+        <span style="color: #023eff; font-size: 13px;">
+        ** 예약 취소는 예약 신청하신 [공공서비스예약 화면] 상단 [마이페이지] - [예약현황] 상세 화면에서 취소 가능
+      </span>
+      </p>
+      </span>
+    </div>
+
+<div class="apply-wrap apply-pc" style="display: block;">
+<h5 class="apply-title">
+  <span>
+    <br><strong>코로나19 &nbsp; 선제검사</strong>&nbsp;병원별 예약
+  </span>
+</h5>
+<br><div class="apply-btn-lists">
+  <div style="width:100px;height:100px;border-radius:50px; background-color:#86B404; float: left; margin-right:10px; opacity:0.7;">
+  <a class="btn-apply btn-apply-type1 first" href="https://yeyak.seoul.go.kr/reservation/view.web?rsvsvcid=S200611180324345552" target="_blank">
+    <span style="position:relative; top: 35px; size:12; left: 18px; color:white;font-weight=bold">동부병원</span>
+  </a>
+</div>
+<div style="width:100px;height:100px;border-radius:50px; background-color:#86B404; float: left;  margin-right:10px;opacity:0.7;">
+  <a class="btn-apply btn-apply-type1 second" href="https://yeyak.seoul.go.kr/reservation/view.web?rsvsvcid=S200612103834328872" target="_blank">
+    <span  style="position:relative; top: 35px; size:12; left: 18px; color:white;font-weight=bold">서남병원</span>
+  </a>
+</div>
+  <div style="width:100px;height:100px;border-radius:50px; background-color:#86B404; float: left;  margin-right:10px;opacity:0.7;">
+  <a class="btn-apply btn-apply-type1 third" href="https://yeyak.seoul.go.kr/reservation/view.web?rsvsvcid=S200611180324345552" target="_blank">
+    <span  style="position:relative; top: 35px; size:12; left: 18px; color:white;font-weight=bold">서북병원</span>
+  </a>
+</div>
+  <div style="width:100px;height:100px;border-radius:50px; background-color:#86B404; float: left;  margin-right:10px;opacity:0.7;">
+  <a class="btn-apply btn-apply-type1 first" href="https://yeyak.seoul.go.kr/reservation/view.web?rsvsvcid=S200611180324345552" target="_blank">
+    <span  style="position:relative; top: 35px; size:12; left: 18px; color:white;font-weight=bold">은평병원</span>
+  </a>
+</div>
+  <div style="width:100px;height:100px;border-radius:50px; background-color:#86B404; float: left;  margin-right:10px;opacity:0.7;">
+  <a class="btn-apply btn-apply-type1 first" href="https://yeyak.seoul.go.kr/reservation/view.web?rsvsvcid=S200611180324345552" target="_blank">
+    <span  style="position:relative; top: 35px; size:12; left: 12px; color:white;font-weight=bold">서울의료원</span>
+  </a>
+</div>
+  <div style="width:100px;height:100px;border-radius:50px; background-color:#86B404; float: left;  margin-right:10px;opacity:0.7;">
+  <a class="btn-apply btn-apply-type1 first" href="https://yeyak.seoul.go.kr/reservation/view.web?rsvsvcid=S200611180324345552" target="_blank">
+    <span  style="position:relative; top: 35px; size:12; left: 12px; color:white;font-weight=bold">어린이병원</span>
+  </a>
+</div>
+  <div style="width:100px;height:100px;border-radius:50px; background-color:#86B404; float: left;opacity:0.7;">
+  <a class="btn-apply btn-apply-type1 first" href="https://yeyak.seoul.go.kr/reservation/view.web?rsvsvcid=S200611180324345552" target="_blank">
+    <span  style="position:relative; top: 35px; size:12; left: 12px; color:white;font-weight=bold">보라매병원</span>
+  </a>
+</div>
+</div>
+</div>
+</ul>
+</div>
+
+</section>
+
+<!-- 안전 수칙 -->
+
+<hr class="m-0" />
+<!-- Interests-->
+<section class="resume-section" id="Rule">
+    <div class="resume-section-content">
+        <h3 class="mb-5">안전 수칙</h3>
+
+        <div class="wrapper">
+          <div class="slider">
+            <ul class="js_slider_images">
+              <div style="margin: 0px auto; max-width:780px;background-color: #FFF;padding-bottom: 50px;">
+                <style type="text/css">
+                .embed-container iframe,
+                .embed-container object,
+                .embed-container embed {position: absolute;top: 0;left: 50%;transform: translateX(-50%);width: 93%;height: 100%;}
+              </style>
+                <div class="embed-container" style="position: relative; padding-bottom: 52.23%; max-width: 100%; height: 0px; overflow: hidden">
+                <iframe allowfullscreen=""  frameborder="0" height="376"
+                    src="https://www.youtube.com/embed/P-rhqWpjVag"  width="100%" height="500">
+                  </iframe>
+                </div>
+              </div>
+
+              <li class="slider_images-item">
+                <img class="slider_images-image" src="guideline_01.jpg"  width="100%" style="margin-bottom: 10px;"/>
+              </li>
+              <li class="slider_images-item">
+                <img class="slider_images-image" src="guideline_02.jpg"  width="100%" style="margin-bottom: 10px;"/>
+              </li>
+              <li class="slider_images-item">
+                <img class="slider_images-image" src="guideline_03.jpg"  width="100%" style="margin-bottom: 10px;"/>
+              </li>
+              <li class="slider_images-item">
+                <img class="slider_images-image" src="guideline_04.jpg"  width="100%" style="margin-bottom: 10px;"/>
+              </li>
+              <li class="slider_images-item">
+                <img class="slider_images-image" src="guideline_05.jpg"  width="100%" style="margin-bottom: 10px;"/>
+              </li>
+              <li class="slider_images-item">
+                <img class="slider_images-image" src="guideline_06.jpg"  width="100%" style="margin-bottom: 10px;"/>
+              </li>
+              <li class="slider_images-item">
+                <img class="slider_images-image" src="guideline_07.jpg"  width="100%" style="margin-bottom: 10px;"/>
+              </li>
+            </ul>
+            <div calss="slider_controls">
+          <!--    <span class="slider_controljs_slider_prev">prev</span>-->
+              <ol class="js_slider_pagers">
+              </ol>
+          <!--     <span class="slider_controljs_slider_next">next</span>-->
+
+            </div>
+        </div>
+      </div>
+
+    </script>
+</section>
+
+<hr class="m-0" />
+<!-- 코로나 관련 피해 지원 -->
+<section class="resume-section" id="Support">
+    <div class="resume-section-content">
+        <h3 class="mb-5">코로나 관련 피해 지원</h3>
+        <ul class="fa-ul mb-0">
+            <li>
+              <p>코로나19 확산으로 인한 소비심리 위축 등으로 경제적 타격을 입은 국민들을 지원하기 위해 정부에서 시행하는 현금 지원 대책입니다.</p>
+              <p>자신에게 맞는 지원금을 신청하여 받으실 수 있습니다. (배너 클릭)</p>
+            </li>
+            <li>
+              <a href="https://www.gov.kr/portal/coronaPolicy/list/svc/grp"><img src="그림1.png" alt=""></a>
+              <a href="http://www.bokjiro.go.kr/welInfo/retrieveGvmtWelInfo.do?welInfSno=303"><img src="그림2.png" alt=""></a>
+              <a href="http://www.moef.go.kr/sns/2020/emgncEcnmyMtg.do?category1=detail&slideCnt=01#01"><img src="그림3.png"alt=""></a>
+
+            </li>
+          </br>
+            <li>
+                <a href="https://covid19.ei.go.kr/eisp/eih/es/cv/main.do"><img src="그림4.jpg" alt=""></a>
+                <a href="https://blog.naver.com/hellopolicy/221994186099"><img src="그림5.png" alt=""></a>
+                <a href="https://www.gov.kr/portal/coronaPolicy/list/emergCalamSportAmt"><img src="그림6.png" alt=""></a>
+            </li>
+            <li>
+              <br><br>
+              <a href="http://www.seoul.go.kr/coronaV/coronaStatusSample.do"><p style="text-align:center;">관련 피해보상 정책 더 보러가기</p></a>
+              <br>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- 하단바 푸터 -->
+            <footer class="footer text-center">
+              <div class="container">
+                <div class="row">
+                  <!-- Footer Location-->
+                  <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h4 class="text-uppercase mb-4 text-center text-white" style="font-family: 'Jua', sans-serif; font-size : 25px;">Location</h4>
+                    <p class="lead mb-0">
+                      05006 seoulteugbyeolsi gwangjingu
+                      <br />
+                      neungdonglo 209(gunjadong) sejongdaehaggyo
+                    </p>
+                  </div>
+                  <!-- Footer Social Icons-->
+                  <div class="col-lg-4 mb-5 mb-lg-0 align-items-center">
+                    <h4 class="text-uppercase mb-4 text-center text-white" style="font-family: 'Jua', sans-serif; font-size : 25px;">코로나 관련 사이트</h4>
+                    <a class="btn btn-outline-light btn-social mx-1" href="http://www.cdc.go.kr/#a">질병관리본부</a><br>
+                    <a class="btn btn-outline-light btn-social mx-1" href="http://ncov.mohw.go.kr/">중앙대책안전본부</a><br>
+                    <a class="btn btn-outline-light btn-social mx-1" href="https://www.who.int/">세계보건기구(WHO)</a><br>
+                    <a class="btn btn-outline-light btn-social mx-1" href="https://www.facebook.com/seoul.kr">서울시 페이스북</a>
+
+                  </div>
+                  <!-- Footer About Text
+                  <div class="col-lg-4">-->
+                  <div class="col-lg-4">
+                    <h4 class="text-uppercase mb-4 text-center text-white" style="font-family: 'Jua', sans-serif; font-size : 25px;"> &nbsp;&nbsp;&nbsp;&nbsp;신고 상담번호</h4>
+                    <ul>
+                    <li style="font-family: 'Sunflower', sans-serif; font-size : 20px;">질병관리본부 콜센터 : 1339</li>
+                    <li style="font-family: 'Sunflower', sans-serif; font-size : 20px;">지역번호 : +120</li>
+                    <li style="font-family: 'Sunflower', sans-serif; font-size : 20px;">지역번호 : +114</li>
+                    <li style="font-family: 'Sunflower', sans-serif; font-size : 18px;">해당 자치구 보건소에 연락하세요!</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </footer>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
