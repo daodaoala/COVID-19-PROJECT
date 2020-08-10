@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Corona News</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Malgun Gotic', sans-serif;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    img {
+      border: 0;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    html {
+      background: #f7f5f5;
+    }
+  </style>
+  <style>
+    .outer-menu {
+      float: left;
+      width: 100px;
+      height: 20px;
+      line-height: 20px;
+      padding: 10px 0;
+      position: relative;
+      text-align: center;
+
+      font-size: 13px;
+      font-weight: bold;
+      z-index: 9999;
+    }
+
+    .outer-menu:hover {
+      background: #E1DFDF;
+    }
+
+    .inner-menu {
+      display: none;
+      background: #FFFFFF;
+      margin-top: 10px;
+      width: 100%;
+      border-top: 1px solid #cccaca;
+      box-shadow: 0 2px 4px rgba(34, 25, 25, 0.5);
+    }
+
+    .inner-menu a {
+      display: block;
+      padding: 5px 10px;
+      z-index: 5000;
+    }
+
+    .inner-menu a:hover {
+      background: #E1DFDF;
+    }
+  </style>
+
+  <style>
+    #main-navigation {
+      height: 30px;
+      background: #faf7f7;
+      border-top: 1px solid #cfcaca;
+      box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
+    }
+
+    #main-navigation>ul {
+      overflow: hidden;
+      text-align: center;
+    }
+
+    #main-navigation>ul>li {
+      display: inline;
+      padding: 0 5px;
+      line-height: 30px;
+      font-size: 13px;
+      color: #524D4D;
+      text-shadow: 0 1px 1px white;
+    }
+
+    #main-navigation>ul>li:hover {
+      background: #E1DFDF;
+      border-radius: 2px;
+    }
+  </style>
+
+  <style>
+    .header-search-form {
+      height: 26px;
+      padding: 7px;
+    }
+
+    .input-search {
+      display: block;
+      float: left;
+      background-color: #FFFFFF;
+      border: 1px solid #CCCCCC;
+      border-radius: 15px 0 0 15px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+      width: 120px;
+      height: 24px;
+      padding: 0 0 0 10px;
+      font-size: 12px;
+      color: #555555;
+    }
+
+    .input-search:focus {
+      border-color: rgba(82, 168, 236, 0.8);
+      outline: 0;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .input-search-submit {
+      display: block;
+      float: left;
+      width: 50px;
+      height: 26px;
+      border-radius: 0 15px 15px 0;
+      border: 1px solid #CCCCCC;
+      margin-left: -1px;
+      vertical-align: top;
+      display: inline-block;
+    }
+  </style>
+
+  <style>
+    .paper {
+      width: 190px;
+      margin-top: 10px;
+      padding: 15px 15px 0;
+      font-size: 11px;
+      background: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+    }
+
+    .paper-content {
+      margin: 0 -15px;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #F2F0F0;
+      overflow: hidden;
+    }
+
+    .paper-description {
+      margin: 10px 0;
+    }
+
+    .paper-link {
+      display: block;
+      float: left;
+    }
+
+    .paper-text {
+      float: left;
+      width: 150px;
+      margin-left: 10px;
+    }
+  </style>
+
+  <!-- 섹션 -->
+  <style>
+    /* 미디어쿼리 지원 x */
+    #main-section {
+      width: 920px;
+      margin: 0 auto;
+    }
+
+    /* 세줄 */
+    @media(max-width:919px) {
+      #main-section {
+        width: 690px;
+      }
+    }
+    /* 네줄 */
+    @media(min-width:930px) and (max-width:1149px) {
+      #main-section {
+        width: 920px;
+      }
+    }
+
+    /* 다섯줄 */
+    @media(min-width:1150px) and (max-width:1379px) {
+      #main-section {
+        width: 1150px;
+      }
+    }
+
+    /* 여섯줄 */
+   @media(min-width:1380px) {
+      #main-section {
+        width: 1380px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="css/jquery.lightbox.css" media="screen" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="jquery.masonry.min.js"></script>
+  <script src="jquery.imagesloaded.min.js"></script>
+<script>
+
+    //무한 스크롤
+    $(document).ready(function() {
+      $grid = $('#main-section').masonry({
+        columnWidth: 110
+      });
+    });
+    var img1=document.getElementById("img1");
+    var appendDocument = function() {
+      for (var i = 0; i < 20; i++) {
+        var height = Math.floor((Math.random() * (300 - 200 + 1)) + 200);
+        var num=Math.floor(Math.random()*(71));
+        var elem = $(`<div>
+                        <div class="paper-holder">
+                          <a><img width="160" src="images/${num}.jpg" /></a>
+                          </div>
+                        <div class="paper-content">
+                        <p><기사 내용></p>
+                        </div>
+            </div>`).addClass('paper');
+
+        $grid.append(elem).masonry('appended', elem);
+      }
+    };
+
+
+    $(window).scroll(function() {
+      var scrollHeight = $(window).scrollTop() + $(window).height();
+      var documentHeight = $(document).height();
+
+      if (scrollHeight+10 >= documentHeight) {
+        appendDocument();
+      }
+    });
+  </script>
+  <script>
+    //풀다운 메뉴
+    $(document).ready(function() {
+      $('.outer-menu').hover(function() {
+        $(this).find('.inner-menu').css('display', 'block');
+      }, function() {
+        $(this).find('.inner-menu').css('display', 'none');
+      });
+    });
+
+    // 페이지
+    $(document).ready(function() {
+      $('#main-section').imagesLoaded(function() {
+        $('#main-section').masonry({
+          itemSelector: '.paper',
+          columnWidth: 230,
+          isAnimated: true
+        });
+      });
+    });
+  </script>
+
+</head>
+
+<body>
+
+  <div class="jumbotron text-center mb-0">
+    <h1><B>Corona News</B></h1>
+  </div>
+  <div class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <!-- 본문 영역 -->
+  <section id="main-section">
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/0.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://news.kbs.co.kr/news/view.do?ncd=4491967&ref=A>방역당국 “코로나19 치료제 ‘렘데시비르’ 42명에 공급…효과는 검토 필요”</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/1.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://imnews.imbc.com/news/2020/society/article/5838698_32633.html>코로나19 신규 환자 35명…국내 20명·해외 15명</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/2.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200711003151088?input=1195m>WHO "현 상황에선 코로나19 사라질 것 같지 않다"(종합)</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/3.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200711036500065?input=1195m>코로나19 방역 강화 불구 유명 해수욕장마다 피서객 몰려</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/4.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.fnnews.com/news/202007100856257885>국민 '66만명' 코로나19 극복 위해 자원봉사 나섰다</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/5.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=www.sportsseoul.com/news/read/936009?ref=naver>코로나19 완치자 혈장 확보, 내주 제제 생산 임상시험</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/6.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://news.khan.co.kr/kh_news/khan_art_view.html?artid=202007101021001&code=940100>[속보]코로나19 신규확진자 45명...해외유입이 더 많아</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/7.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://biz.chosun.com/site/data/html_dir/2020/07/11/2019071100834.html?utm_source=naver&utm_medium=original&utm_campaign=biz>코로나19 속 9급 공무원 시험 실시…응시율 70.5%</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/8.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200711031000002?input=1195m>"교통량, 코로나19 이전 근접…대중교통 기피는 지속"</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/9.png" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://www.sentv.co.kr/news/view/576025>코로나에 집콕…‘모바일 게임에 22.7조 썼다’</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/10.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://biz.chosun.com/site/data/html_dir/2020/07/11/2020071101865.html?utm_source=naver&utm_medium=original&utm_campaign=biz> 美 컬럼비아대 "코로나, 심장·뇌부터 피부까지 몸 전체 공격”</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/11.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.nocutnews.co.kr/news/5376613>광주 '코로나 확산세' 지속…방문판매 6명 늘어 누적 127명</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/5.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://cnbc.sbs.co.kr/article/10000989349?division=NAVER>코로나19 ‘혈장치료제’ 임상시험…완치자 혈장으로 다음주 생산</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/12.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://cnbc.sbs.co.kr/article/10000989335?division=NAVER>김해공항, 코로나 19 장기화로 이용 급감</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/13.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.edaily.co.kr/news/read?newsId=01170966625833536&mediaCodeNo=257&OutLnkChk=Y>"렘데시비르, 코로나19 중환자 사망률 62% 낮춰"</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/14.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200711028200004?input=1195m>코로나19 확진자 서울 누계 1천409명…어제 8명 감염</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/15.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.nocutnews.co.kr/news/5376549>서울 동작구 코로나 확진자, 강릉 주문진·양양 다녀가</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/16.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.sbs.co.kr/news/endPage.do?news_id=N1005878570&plink=ORI&cooper=NAVER>WHO, 中에 코로나19 기원 조사팀 파견</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/17.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200709145900084?input=1195m>[특파원 시선] 코로나 재확산 속 눈길 끄는 동남아 '제로3국'</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/18.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.seoul.co.kr/news/newsView.php?id=20200711500025&wlog_tag3=naver>“또 최다 기록”...미국 내 코로나19 신규 확진 6만9천명</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/19.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.nocutnews.co.kr/news/5375632>정부, 코로나19 치료제·백신 개발에 1936억 원 투입</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/20.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://biz.chosun.com/site/data/html_dir/2020/07/09/2020070902211.html?utm_source=naver&utm_medium=original&utm_campaign=biz>코로나로 지갑 닫은 가계… 올해 1분기 여유자금 '역대 최대'</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/21.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://zdnet.co.kr/view/?no=20200709084743>쿠팡, 코로나19 안전감시단 2400명 고용..."月 수십억 쓴다”</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/22.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://news.kbs.co.kr/news/view.do?ncd=4492001&ref=A>젊고 기저질환 없으면 안심?…코로나19가 남긴 후유증</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/30.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://newsis.com/view/?id=NISX20200712_0001091954&cID=10101&pID=10100>"코로나19, 신장·심장·뇌·피부·면역체계 등도 손상" 美연구진</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/26.png" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://news.kbs.co.kr/news/view.do?ncd=4491999&ref=D>“20대인데도 심하게 앓았어요” 완치자가 말하는 코로나19</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/31.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://www.gailbo.com/default/index_view_page.php?idx=286846>직장인 83% 포스트 코로나 시대…주4일제 희망</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/32.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.sbs.co.kr/news/endPage.do?news_id=N1005879119&plink=ORI&cooper=DAUM>에미레이트항공 "코로나 위기로 15% 감원할 수도"</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/33.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://cnews.thekpm.com/view.php?ud=2020071123512869247addc4692d_17>지역 농특산물 구매도 비대면이 대세...코로나19 영향</a></p>
+      </div>
+    </div>
+    <!-- -------------- -->
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/34.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.joins.com/article/23822590>독립기념일 파티했는데…코로나 속출, 주일 미군기지 2곳 봉쇄</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/35.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://view.asiae.co.kr/article/2020071210475988459>코로나19 신규 확진자수 하루만에 다시 40명대 (종합)</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/36.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://imnews.imbc.com/news/2020/society/article/5839649_32633.html>코로나19 44명 신규 확진…국내 발생 21명</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/37.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.pressian.com/pages/articles/2020071210050091055?utm_source=naver&utm_medium=search>‘코로나19 비상’ 광주시, 보름새 128명 추가 발생</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/38.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://cnbc.sbs.co.kr/article/10000989363?division=NAVER>롯데그룹, 14일 ‘비대면’ 사장단회의…포스트 코로나 논의</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/39.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.sedaily.com/NewsView/1Z59WJ20TO>"코로나 악용 해킹시도 폭증"...KT 후후, 2분기 스팸통계 발표</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/40.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://zdnet.co.kr/view/?no=20200712093900>삼성 임직원 20만명, 코로나19 방지 위해 휴가 분산</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/41.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://www.namdonews.com/news/articleView.html?idxno=577480>이용섭 시장, 광주 코로나 휴일 브리핑…n차 감염 확진자 확산(전문)</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/42.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200712007800054?input=1195m>배드민턴 클럽 등 광주 코로나19 확진 5명 늘어…누적 161명</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/43.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200711003151088?input=1195m>WHO "현 상황에선 코로나19 사라질 것 같지 않다"(종합)</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/44.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://view.asiae.co.kr/article/2020071209590591781>삼성, 국내 20만 임직원 '분산휴가' 권고…코로나 확산방지·내수 활성화</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/45.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://imnews.imbc.com/replay/2020/nwdesk/article/5839348_32524.html>'버스·지하철' 피하고 '내 차'…코로나에 도로 막힌다</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/46.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.ytn.co.kr/_ln/0103_202007111758349667>코로나19 혈장 치료제 다음주 생산 뒤 바로 임상 시험</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/47.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://biz.chosun.com/site/data/html_dir/2020/07/11/2020071101126.html?utm_source=naver&utm_medium=original&utm_campaign=biz>방역당국 "코로나 치료제 '렘데시비르' 투여 27명 중 9명 호전"</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/48.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://view.asiae.co.kr/article/2020071207343512773>드디어 마스크 쓰고 등장한 트럼프…"코로나19 발병 후 공식석상 첫 착용"</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/49.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://sports.chosun.com/news/ntype.htm?id=202007130100113480007787&servicedate=20200712>LG전자, 코로나19 의료진에 전자식 마스크 전달</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/50.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.sbs.co.kr/news/endPage.do?news_id=N1005879442&plink=ORI&cooper=NAVER>제일기획 강남사업장 직원 1명 코로나 확진</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/51.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.joins.com/article/23822584>빅데이터로 본 제주 관광…코로나 영향에 생태 관광지 '인기'</a></p>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/52.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.etnews.com/20200712000001>광주지역 중소기업, 코로나19 극복 기부물품 기탁</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/53.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.chosun.com/site/data/html_dir/2020/05/10/2020051000094.html>이태원 코로나 제주까지 상륙, 하루만에 뚫린 '코로나 청정'</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/54.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.news1.kr/articles/?3992936>故박원순 아들 박주신씨, 코로나 검사 끝 귀국 완료…빈소로</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/55.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://www.cnews.co.kr/uhtml/read.jsp?idxno=202007101036340270186>건설업계 수장들이 내놓은 코로나19 위기 극복 카드</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/56.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://cnbc.sbs.co.kr/article/10000989321?division=NAVER>美 길리어드 “렘데시비르, 코로나 사망 위험 62% 줄여”'</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/57.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.chosun.com/site/data/html_dir/2020/07/12/2020071200485.html?utm_source=naver&utm_medium=original&utm_campaign=news>용인 2살남매 등 일가족 4명 코로나 확진</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/58.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.news1.kr/articles/?3993052>印 거물 배우 아미타브 바찬, 아들과 함께 코로나 확진</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/59.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://news.tf.co.kr/read/economy/1801655.htm>"코로나 이후 車 시장, 빠르면 2023년 회복할 것"</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/60.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://newsis.com/view/?id=NISX20200712_0001092183&cID=10301&pID=10300>북한, 5세 미만 영유아 보호자에 보조금…코로나19 여파</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/61.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://www.businesspost.co.kr/BP?command=article_view&num=186935>국내 코로나19 하루 확진 44명 나와, 지역감염 21명 해외유입 23명</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/62.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://mksports.co.kr/view/2020/712349/>양키스 날벼락…ML 통산 273세이브 채프먼도 코로나19 감염</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/63.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://newsis.com/view/?id=NISX20200712_0001092202&cID=10803&pID=14000>성남 분당거주 미국인 1명 용인서 코로나19 확진</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/64.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200711018100007?input=1195m>MLB 30개 구단 중 28곳에서 코로나19 확진자 나와</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/65.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200712021300009?input=1195m>영국, 코로나19 재확산 우려에 '비만과의 전쟁' 준비</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/66.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200711041600504?input=1195m>미국 코로나19 상황 최악…한미연합훈련도 발목 잡히나</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/67.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://view.asiae.co.kr/article/2020071211003217141>경기도, 15일부터 코로나19 신고 코너 운영</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/68.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://news.joins.com/article/23822623>[서소문사진관]코로나 19보다 무서운 지지율 추락...마스크 거부하던 트럼프 결국 착용</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/69.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=http://www.dt.co.kr/contents.html?article_no=2020071102109931102004&ref=naver>코로나19 혈장치료제 곧 임상시험 들어간다…다음주 제제 생산</a></p>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-holder">
+        <a><img width="160" src="images/70.jpg" /></a>
+      </div>
+      <div class="paper-content">
+        <p class="paper-text"><a href=https://www.yna.co.kr/view/AKR20200712034400054?input=1195m>코로나 확산 2주째…광주 교회, 주일 예배 방역 수칙 지켰다</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+
+</html>
