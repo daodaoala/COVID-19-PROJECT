@@ -11,7 +11,7 @@
 
 
 ## 코로나 19 메인 화면
-<img width = "960" src = "https://user-images.githubusercontent.com/67010327/103901642-c16d8580-513c-11eb-8b64-186014ce346a.png">
+<img width = "960" src = "https://user-images.githubusercontent.com/67010327/103904081-22e32380-5140-11eb-9c89-3bc435b6d48a.png">
 <img width = "960" src = "https://user-images.githubusercontent.com/67010327/103850855-b0485880-50eb-11eb-8cc5-8612ec5d1423.png">
 <img width = "960" src = "https://user-images.githubusercontent.com/67010327/103850857-b1798580-50eb-11eb-8116-38f2272a8de8.png">
 <img width = "960" src = "https://user-images.githubusercontent.com/67010327/103850935-df5eca00-50eb-11eb-9112-6dfcc9437392.png">
