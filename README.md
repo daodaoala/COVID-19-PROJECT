@@ -7,3 +7,8 @@
 
 
 ## 코로나 19 대문 화면
+<img src = "https://user-images.githubusercontent.com/67010327/103850696-55aefc80-50eb-11eb-9a46-cf14a5515872.png">
+
+
+## 코로나 19 메인 화면
+<img src = "https://user-images.githubusercontent.com/67010327/103850696-55aefc80-50eb-11eb-9a46-cf14a5515872.png">
